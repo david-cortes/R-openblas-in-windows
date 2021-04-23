@@ -48,16 +48,16 @@ That is to say: using OpenBLAS made the operation almost 30x faster. No changes 
 ### What you will need
 
 The following will be required in order to follow the next steps:
-* Write access to the folder where R is installed. If R was installed with the default options in the installer, saying 'Yes' to all, this will mean that administrator rights will be required.
+* Write access to the folder where R is installed. If R was installed with the default options in the installer, saying 'Yes' to all, this means that administrator rights will be required.
 * Some compression/de-compression software that could extract compressed files from Python wheels, such as [7-zip](https://www.7-zip.org).
 
 ### Instructions in detail
 
-* Download the [Numpy wheel for Windows](https://pypi.org/project/numpy/#files) from PyPI. There are many of them so it needs to be the correct variant: should say `win` (as this is for windows), and should match to the computer architecture (`amd64` for 64-bit windows versions, `win32` for 32-bit version).
+* Download the [Numpy wheel for Windows](https://pypi.org/project/numpy/#files) from PyPI. There are many of them so it needs to be the correct variant: should say `win` (as this is for windows), and should match to the computer architecture (`amd64` for 64-bit windows versions, `win32` for 32-bit version). Example: `numpy-1.20.2-cp37-cp37m-win_amd64.whl`.
 * De-compress (un-zip) the wheel. If using 7-zip, this can be done by right-clicking the file, selecting '7-zip' and then 'Extract to ...' or similar.
 * In the folder where the contents of the wheel archive were extracted, locate some file ending in `.dll` with a name containing `openblas`. Typically, this should be under `<folder>\numpy\.libs\`, and might be named as something like `libopenblas.GK7GX5KEQ4F6UYO3P26ULGBQYHGQO7J4.gfortran-win_amd64.dll`. Keep this file at hand for later.
 * Locate the folder where R itself is installed. Typically, this should be something like: `C:\Program Files\R\R-4.0.5` (or some other version depending on what you have installed).
-* Within the R folder, locate the sub-folder `bin\x64` (e.g. C:\Program Files\R\R-4.0.5\bin\x64).
+* Within the R folder, locate the sub-folder `bin\x64` (e.g. `C:\Program Files\R\R-4.0.5\bin\x64`).
 * In this folder there should be two key files: `Rblas.dll` and `Rlapack.dll`. Copy them somewhere to have a backup if anything goes wrong.
 * Delete these two files (`Rblas.dll` and `Rlapack.dll`) from `bin\x64`.
 * Copy the openblas dll file which was extracted from the NumPy wheel (e.g. `libopenblas.GK7GX5KEQ4F6UYO3P26ULGBQYHGQO7J4.gfortran-win_amd64.dll`) to this same folder **twice**.
