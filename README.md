@@ -54,14 +54,26 @@ The following will be required in order to follow the next steps:
 ### Instructions in detail
 
 * Download the [Numpy wheel for Windows](https://pypi.org/project/numpy/#files) from PyPI. There are many of them so it needs to be the correct variant: should say `win` (as this is for windows), and should match to the computer architecture (`amd64` for 64-bit windows versions, `win32` for 32-bit version). Example: `numpy-1.20.2-cp37-cp37m-win_amd64.whl`. Alternatively, and **for better performance**, find some other OpenBLAS library built with OpenMP support, such as the ones from [conda-forge](https://anaconda.org/conda-forge/openblas/files) (also need to extract the underlying .dll/.lib files).
+![image](numpy_version.png "numpy_version")
+
 * De-compress (un-zip) the wheel. If using 7-zip, this can be done by right-clicking the file, selecting '7-zip' and then 'Extract to ...' or similar.
+![image](extracting.png "extracting")
+
 * In the folder where the contents of the wheel archive were extracted, locate some file ending in `.dll` with a name containing `openblas`. Typically, this should be under `<folder>\numpy\.libs\`, and might be named as something like `libopenblas.GK7GX5KEQ4F6UYO3P26ULGBQYHGQO7J4.gfortran-win_amd64.dll`. Keep this file at hand for later.
+![image](oblas_dll.png "oblas_dll")
+
 * Locate the folder where R itself is installed. Typically, this should be something like: `C:\Program Files\R\R-4.0.5` (or some other version depending on what you have installed).
 * Within the R folder, locate the sub-folder `bin\x64` (e.g. `C:\Program Files\R\R-4.0.5\bin\x64`).
 * In this folder there should be two key files: `Rblas.dll` and `Rlapack.dll`. Copy them somewhere to have a backup if anything goes wrong.
+![image](orig_ddls.png "orig_ddls")
+
 * Delete these two files (`Rblas.dll` and `Rlapack.dll`) from `bin\x64`.
 * Copy the openblas dll file which was extracted from the NumPy wheel (e.g. `libopenblas.GK7GX5KEQ4F6UYO3P26ULGBQYHGQO7J4.gfortran-win_amd64.dll`) to this same folder **twice**.
+![image](copied_dll.png "copied_dll")
+
 * Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll`. Hint: under the default window settings, file extensions will be hidden, in which case the `.dll` part should be left ot when renaming them.
+![image](orig_ddls.png "orig_ddls")
+
 * Optionally, do the same process for the folder `i386` which should be at the same level as `x64` (e.g. `C:\Program Files\R\R-4.0.5\bin\i386`) (**Important:** for the folder i386, it's necessary to download the NumPy wheel for `i686`, as the one for `amd64` will not do). Typically, one runs only the `x64` R version, so this is unlikely to have any effect.
 
 At this point you're done and the next time you start R it will already be using OpenBLAS for accelerated linear algebra operations.
