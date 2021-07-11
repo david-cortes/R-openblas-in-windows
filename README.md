@@ -53,6 +53,8 @@ The following will be required in order to follow the next steps:
 
 ### Instructions in detail
 
+* Close any R/RStudio session currently running, if there is any.
+
 * Download the [Numpy wheel for Windows](https://pypi.org/project/numpy/#files) from PyPI. There are many of them so it needs to be the correct variant: should say `win` (as this is for windows), and should match to the computer architecture (`amd64` for 64-bit windows versions, `win32` for 32-bit version). Example: `numpy-1.20.2-cp37-cp37m-win_amd64.whl`. Alternatively, and **for better performance**, find some other OpenBLAS library built with OpenMP support, such as the ones from [conda-forge](https://anaconda.org/conda-forge/openblas/files) (also need to extract the underlying .dll/.lib files).
 ![image](numpy_version.png "numpy_version")
 
