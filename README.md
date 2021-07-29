@@ -76,6 +76,8 @@ The following will be required in order to follow the next steps:
 * Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll`. Hint: under the default window settings, file extensions will be hidden, in which case the `.dll` part should be left ot when renaming them.
 ![image](orig_ddls.png "orig_ddls")
 
+* **Optionally**, or if you start getting errors about a missing DLL when re-installing packages, leave a third copy of the the DLL from NumPy in this same folder, but with its original name (e.g. `libopenblas.GK7GX5KEQ4F6UYO3P26ULGBQYHGQO7J4.gfortran-win_amd64.dll`).
+
 * Optionally, do the same process for the folder `i386` which should be at the same level as `x64` (e.g. `C:\Program Files\R\R-4.0.5\bin\i386`) (**Important:** for the folder i386, it's necessary to download the NumPy wheel for `i686`, as the one for `amd64` will not do). Typically, one runs only the `x64` R version, so this is unlikely to have any effect.
 
 At this point you're done and the next time you start R it will already be using OpenBLAS for accelerated linear algebra operations.
