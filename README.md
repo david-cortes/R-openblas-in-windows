@@ -49,39 +49,37 @@ That is to say: using OpenBLAS made the operation almost 30x faster. No changes 
 
 The following will be required in order to follow the next steps:
 * Write access to the folder where R is installed. If R was installed with the default options in the installer, saying 'Yes' to all, this means that administrator rights will be required.
-* Some compression/de-compression software that could extract compressed files from Python wheels, such as [7-zip](https://www.7-zip.org).
+* Some compression/de-compression software that could extract compressed zip files, such as [7-zip](https://www.7-zip.org).
 
 ### Instructions in detail
 
 * Close any R/RStudio session currently running, if there is any.
 
-* Download the [Numpy wheel for Windows](https://pypi.org/project/numpy/#files) from PyPI. There are many of them so it needs to be the correct variant: should say `win` (as this is for windows), and should match to the computer architecture (`amd64` for 64-bit windows versions, `win32` for 32-bit version). Example: `numpy-1.20.2-cp37-cp37m-win_amd64.whl`. Alternatively, and **for better performance**, find some other OpenBLAS library built with OpenMP support, such as the ones from [conda-forge](https://anaconda.org/conda-forge/openblas/files) (also need to extract the underlying .dll/.lib files).
-![image](numpy_version.png "numpy_version")
+* Download the latest version of OpenBLAS for Windows from their [GitHub releases page](https://github.com/xianyi/OpenBLAS/releases) - **be sure to download the right version** for your platform. Most likely, will be named similarly to this (as it was on version 0.3.23):
+![image](github_openblas.png "github_openblas.png")
 
-* De-compress (un-zip) the wheel. If using 7-zip, this can be done by right-clicking the file, selecting '7-zip' and then 'Extract to ...' or similar.
+* De-compress (un-zip) the file. If using 7-zip, this can be done by right-clicking the file, selecting '7-zip' and then 'Extract to ...' or similar.
 ![image](extracting.png "extracting")
 
-* In the folder where the contents of the wheel archive were extracted, locate some file ending in `.dll` with a name containing `openblas`. Typically, this should be under `<folder>\numpy\.libs\`, and might be named as something like `libopenblas.GK7GX5KEQ4F6UYO3P26ULGBQYHGQO7J4.gfortran-win_amd64.dll`. Keep this file at hand for later.
+* In the folder where it was installed, locate a file named `libopenblas.dll`, which should **NOT** be under the same folder as other files ending in `.a` (or if it does, make sure that the file weights several dozen megabytes at least). Most likely, this will be under a folder `lib` in the path where the archive was decompressed.
 ![image](oblas_dll.png "oblas_dll")
 
-* Locate the folder where R itself is installed. Typically, this should be something like: `C:\Program Files\R\R-4.0.5` (or some other version depending on what you have installed).
-* Within the R folder, locate the sub-folder `bin\x64` (e.g. `C:\Program Files\R\R-4.0.5\bin\x64`).
-* In this folder there should be two key files: `Rblas.dll` and `Rlapack.dll`. Copy them somewhere to have a backup if anything goes wrong.
+* Locate the folder where R itself is installed. Typically, this should be something like: `C:\Program Files\R\R-4.3.0` (or some other version depending on what you have installed).
+* Within the R folder, locate the sub-folder `bin\x64` (e.g. `C:\Program Files\R\R-4.3.0\bin\x64`).
+* In this folder there should be two key files: `Rblas.dll` and `Rlapack.dll`. Copy them somewhere else to have a backup if anything goes wrong.
 ![image](orig_ddls.png "orig_ddls")
 
 * Delete these two files (`Rblas.dll` and `Rlapack.dll`) from `bin\x64`.
-* Copy the openblas dll file which was extracted from the NumPy wheel (e.g. `libopenblas.GK7GX5KEQ4F6UYO3P26ULGBQYHGQO7J4.gfortran-win_amd64.dll`) to this same folder **twice**.
-![image](copied_dll.png "copied_dll")
+
+* Copy the openblas dll file which was extracted from the zip file to this same folder **twice**.
 
 * Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll`. Hint: under the default window settings, file extensions will be hidden, in which case the `.dll` part should be left ot when renaming them.
-![image](orig_ddls.png "orig_ddls")
+![image](orig_ddls.png "copied_dll")
 
-* **Optionally**, or if you start getting errors about a missing DLL when re-installing packages, leave a third copy of the the DLL from NumPy in this same folder, but with its original name (e.g. `libopenblas.GK7GX5KEQ4F6UYO3P26ULGBQYHGQO7J4.gfortran-win_amd64.dll`).
-
-* Optionally, do the same process for the folder `i386` which should be at the same level as `x64` (e.g. `C:\Program Files\R\R-4.0.5\bin\i386`) (**Important:** for the folder i386, it's necessary to download the NumPy wheel for `i686`, as the one for `amd64` will not do). Typically, one runs only the `x64` R version, so this is unlikely to have any effect.
+* **Optionally**, or if you start getting errors about a missing DLL when re-installing packages, leave a third copy of the the DLL from the zip file in this same folder, but with its original name (e.g. `libopenblas.dll` - that is, there should be 3 copies of the same file, with names `Rblas.dll`, `Rlapack.dll`, and `libopenblas.dll`).
 
 At this point you're done and the next time you start R it will already be using OpenBLAS for accelerated linear algebra operations.
 
 ### To keep in mind
 
-The OpenBLAS that was taken from NumPy supports multi-threading, which is controlled through an environment variable `OPENBLAS_NUM_THREADS`. Environment variables can be set through the control panel in windows. Alternatively, they can be set in R itself through e.g. `Sys.setenv("OPENBLAS_NUM_THREADS" = as.character(parallel::detectCores()))`, but setting the threads after R has already started might not have any effect. As yet another alternative, the number of threads can be set through the package `RhpcBLASctl`.
+OpenBLAS supports multi-threading, which is controlled through an environment variable `OPENBLAS_NUM_THREADS`. Environment variables can be set through the control panel in windows. Alternatively, they can be set in R itself through e.g. `Sys.setenv("OPENBLAS_NUM_THREADS" = as.character(parallel::detectCores()))`, but setting the threads after R has already started might not have any effect. As yet another alternative, the number of threads can be set through the package `RhpcBLASctl`.
