@@ -74,7 +74,8 @@ The following will be required in order to follow the next steps:
 * Copy the openblas dll file which was extracted from the zip file to this same folder **twice**.
 
 * Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll`. Hint: under the default window settings, file extensions will be hidden, in which case the `.dll` part should be left ot when renaming them.
-![image](orig_ddls.png "copied_dll")
+
+![image](copied_dll.png "copied_dll")
 
 * **Optionally**, or if you start getting errors about a missing DLL when re-installing packages, leave a third copy of the the DLL from the zip file in this same folder, but with its original name (e.g. `libopenblas.dll` - that is, there should be 3 copies of the same file, with names `Rblas.dll`, `Rlapack.dll`, and `libopenblas.dll`).
 
