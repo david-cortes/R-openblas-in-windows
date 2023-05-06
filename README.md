@@ -78,7 +78,7 @@ The following will be required in order to follow the next steps:
 
 * Copy the openblas dll file which was extracted from the zip file to this same folder **twice** (see GIF video below).
 
-* Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll`. Hint: under the default window settings, file extensions will be hidden, in which case the `.dll` part should be left ot when renaming them (see GIF video below).
+* Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll` (see GIF video below).
 
 * **Optionally**, or if you start getting errors about a missing DLL when re-installing packages, leave a third copy of the the DLL from the zip file in this same folder, but with its original name (e.g. `libopenblas.dll` - that is, there should be 3 copies of the same file, with names `Rblas.dll`, `Rlapack.dll`, and `libopenblas.dll`). See GIF video below:
 
@@ -92,6 +92,7 @@ At this point you're done and the next time you start R it will already be using
 OpenBLAS supports multi-threading, which can be controlled dynamically through the package `RhpcBLASctl`, or can be controlled through an environment variable `OPENBLAS_NUM_THREADS`. Importantly, **this environment variable needs to be set before R is started**, which can be done by setting it up through the windows control panel. This tutorial illustrates how to set the variable.
 
 * First, you'll need to find out the maximum number of threads that your CPU supports. This can be known by running the R function `parallel::detectCores()`:
+
 ![image](detect_cores.png "detect_cores")
 
 * With that number being known, now you can configure this as the default for OpenBLAS. First, go to the control panel (click the windows start button and select "Settings"):
