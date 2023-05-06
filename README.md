@@ -72,7 +72,7 @@ The following will be required in order to follow the next steps:
 * Locate the folder where R itself is installed. Typically, this should be something like: `C:\Program Files\R\R-4.3.0` (or some other version depending on what you have installed).
 * Within the R folder, locate the sub-folder `bin\x64` (e.g. `C:\Program Files\R\R-4.3.0\bin\x64`).
 * In this folder there should be two key files: `Rblas.dll` and `Rlapack.dll`. Copy them somewhere else to have a backup if anything goes wrong.
-![image](orig_ddls.png "orig_ddls")
+![image](orig_dlls.png "orig_dlls")
 
 * Delete these two files (`Rblas.dll` and `Rlapack.dll`) from `bin\x64`.
 
