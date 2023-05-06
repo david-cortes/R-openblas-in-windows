@@ -2,7 +2,9 @@
 
 This is a short post illustrating how to easily get R for Windows to use OpenBLAS as the backend for linear algebra operations.
 
-Most tutorials out there are about building R itself with OpenBLAS from source which is very complex, but this is not necessary as long as one is willing to make the installation some 30-60mb heavier, which should not be a problem with today's hard disks.
+Most tutorials out there are about building R itself with OpenBLAS from source which is very complex, but this is not necessary as long as one is willing to make the installation some ~120mb heavier, which should not be a problem with today's hard disks.
+
+In short: R comes with two DLL files `Rblas.dll` and `Rlapack.dll`, containing functions from BLAS and LAPACK, respectively. These can be replaced with other DLL files implementing the same interfaces, such as `libopenblas.dll` or `libmkl_rt.dll`. This tutorial illustrates how to replace these files with OpenBLAS'es more optimized versions.
 
 ### What is OpenBLAS?
 
@@ -61,7 +63,10 @@ The following will be required in order to follow the next steps:
 * De-compress (un-zip) the file. If using 7-zip, this can be done by right-clicking the file, selecting '7-zip' and then 'Extract to ...' or similar.
 ![image](extracting.png "extracting")
 
-* In the folder where it was installed, locate a file named `libopenblas.dll`, which should **NOT** be under the same folder as other files ending in `.a` (or if it does, make sure that the file weights several dozen megabytes at least). Most likely, this will be under a folder `lib` in the path where the archive was decompressed.
+* Configure your windows explorer to show file extensions: click "View" at the top bar and tick "File name extensions".
+![image](show_extensions.png "show_extensions")
+
+* Inside the folder where the file downloaded two steps above was extracted, locate a subfolder with a file named `libopenblas.dll`, which should **NOT** be under the same folder as other files ending in `.a` (or if it does, make sure that the file weights several dozen megabytes at least). Most likely, this will be under a folder `lib` in the path where the archive was decompressed.
 ![image](oblas_dll.png "oblas_dll")
 
 * Locate the folder where R itself is installed. Typically, this should be something like: `C:\Program Files\R\R-4.3.0` (or some other version depending on what you have installed).
@@ -71,16 +76,35 @@ The following will be required in order to follow the next steps:
 
 * Delete these two files (`Rblas.dll` and `Rlapack.dll`) from `bin\x64`.
 
-* Copy the openblas dll file which was extracted from the zip file to this same folder **twice**.
+* Copy the openblas dll file which was extracted from the zip file to this same folder **twice** (see GIF video below).
 
-* Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll`. Hint: under the default window settings, file extensions will be hidden, in which case the `.dll` part should be left ot when renaming them.
+* Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll`. Hint: under the default window settings, file extensions will be hidden, in which case the `.dll` part should be left ot when renaming them (see GIF video below).
 
-![image](copied_dll.png "copied_dll")
+* **Optionally**, or if you start getting errors about a missing DLL when re-installing packages, leave a third copy of the the DLL from the zip file in this same folder, but with its original name (e.g. `libopenblas.dll` - that is, there should be 3 copies of the same file, with names `Rblas.dll`, `Rlapack.dll`, and `libopenblas.dll`). See GIF video below:
 
-* **Optionally**, or if you start getting errors about a missing DLL when re-installing packages, leave a third copy of the the DLL from the zip file in this same folder, but with its original name (e.g. `libopenblas.dll` - that is, there should be 3 copies of the same file, with names `Rblas.dll`, `Rlapack.dll`, and `libopenblas.dll`).
+![image](swap_blases.gif "swap_blases")
+
 
 At this point you're done and the next time you start R it will already be using OpenBLAS for accelerated linear algebra operations.
 
-### To keep in mind
+### Controlling number of threads
 
-OpenBLAS supports multi-threading, which is controlled through an environment variable `OPENBLAS_NUM_THREADS`. Environment variables can be set through the control panel in windows. Alternatively, they can be set in R itself through e.g. `Sys.setenv("OPENBLAS_NUM_THREADS" = as.character(parallel::detectCores()))`, but setting the threads after R has already started might not have any effect. As yet another alternative, the number of threads can be set through the package `RhpcBLASctl`.
+OpenBLAS supports multi-threading, which can be controlled dynamically through the package `RhpcBLASctl`, or can be controlled through an environment variable `OPENBLAS_NUM_THREADS`. Importantly, **this environment variable needs to be set before R is started**, which can be done by setting it up through the windows control panel. This tutorial illustrates how to set the variable.
+
+* First, you'll need to find out the maximum number of threads that your CPU supports. This can be known by running the R function `parallel::detectCores()`:
+![image](detect_cores.png "detect_cores")
+
+* With that number being known, now you can configure this as the default for OpenBLAS. First, go to the control panel (click the windows start button and select "Settings"):
+![image](launch_control_panel.png "launch_control_panel")
+
+* In the control panel, search for "environment variables" and choose the option for editing them:
+![image](control_panel_env.png "control_panel_env")
+
+* In the menu that pops up, choose to add a new variable for your user:
+![image](new_env_var.png "new_env_var")
+
+* Name the variable as `OPENBLAS_NUM_THREADS` and set the value for it that you got from `parallel::detectCores()` (here it is set to 16):
+![image](new_var1.png "new_var1")
+![image](new_var2.png "new_var2")
+
+* Reboot your computer. Next time R is started, OpenBLAS will be configured to exploit all the available threads from your CPU to run faster.
