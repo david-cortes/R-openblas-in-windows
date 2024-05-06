@@ -89,7 +89,7 @@ At this point you're done and the next time you start R it will already be using
 
 ### Controlling number of threads
 
-OpenBLAS supports multi-threading, which can be controlled dynamically through the package `RhpcBLASctl`, or can be controlled through an environment variable `OPENBLAS_NUM_THREADS`. Importantly, **this environment variable needs to be set before R is started**, which can be done by setting it up through the windows control panel. This tutorial illustrates how to set the variable.
+OpenBLAS supports multi-threading, which can be controlled dynamically through the package `RhpcBLASctl`, or can be controlled through an environment variable `OPENBLAS_NUM_THREADS`. Importantly, **this environment variable needs to be set before R is started**, which can be done by setting it up through the windows control panel (**important**: changing it through `Sys.setenv` or through an `.Renviron` file has no effect, since those changes happen after the R executable is launched). This tutorial illustrates how to set the variable.
 
 * First, you'll need to find out the maximum number of threads that your CPU supports. This can be known by running the R function `parallel::detectCores()`:
 
