@@ -60,6 +60,8 @@ The following will be required in order to follow the next steps:
 * Download the latest version of OpenBLAS for Windows from their [GitHub releases page](https://github.com/xianyi/OpenBLAS/releases) - **be sure to download the right version** for your platform. Most likely, will be named similarly to this (as it was on version 0.3.23):
 ![image](github_openblas.png "github_openblas.png")
 
+    * Optional: for even faster results, instead of the downloading the GitHub release from OpenBLAS which uses pthreads for parallelization, download an OpenMP-based version [from conda-forge](https://anaconda.org/conda-forge/libopenblas/files). Should pick a version from there saying "win-64" (for windows) and "openmp" (faster threading backend) - but note that the next couple steps will look a bit different if you download that file instead of the one form GitHub. Despite the file extensions, those .conda files are also compressed files which will contain a large .dll file inside them (see rest of this tutorial for more details).
+
 * De-compress (un-zip) the file. If using 7-zip, this can be done by right-clicking the file, selecting '7-zip' and then 'Extract to ...' or similar.
 ![image](extracting.png "extracting")
 
