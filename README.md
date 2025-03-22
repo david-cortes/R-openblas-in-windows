@@ -28,7 +28,7 @@ microbenchmark({
 }, times=10L)
 ```
 
-When ran on my own setup (AMD Ryzen 7 2700, 8c/16t, 3.2GHz), I obtain the following timings:
+When ran on an laptop with CPU AMD Ryzen 7 2700 (8c/16t, 3.2GHz), the timings are as follows:
 
 * With R's BLAS:
 ```
@@ -68,7 +68,7 @@ The following will be required in order to follow the next steps:
 * Configure your windows explorer to show file extensions: click "View" at the top bar and tick "File name extensions".
 ![image](show_extensions.png "show_extensions")
 
-* Inside the folder where the file downloaded two steps above was extracted, locate a subfolder with a file named `libopenblas.dll`, which should **NOT** be under the same folder as other files ending in `.a` (or if it does, make sure that the file weights several dozen megabytes at least). Most likely, this will be under a folder `lib` in the path where the archive was decompressed.
+* Inside the folder where the file downloaded two steps above was extracted, locate a subfolder with a file named `libopenblas.dll`, which should **NOT** be under the same folder as other files ending in `.a` (or if it does, make sure that the file weights several dozen megabytes at least). Most likely, this will be under a folder `bin` in the path where the archive was decompressed.
 ![image](oblas_dll.png "oblas_dll")
 
 * Locate the folder where R itself is installed. Typically, this should be something like: `C:\Program Files\R\R-4.3.0` (or some other version depending on what you have installed).
