@@ -114,7 +114,7 @@ OpenBLAS supports multi-threading, which can be controlled dynamically through t
 
 Note that OpenBLAS by default ships with the 'pthreads' backend for multi-threading, but it offers a faster version based on OpenMP. For better speed, it's possible to use the OpenMP version of OpenBLAS instead, but this variant is not bunlded in the pre-built GitHub releases of OpenBLAS.
 
-To use the OpenMP variant, one can instead get the `.dll` files from conda-forge packages. For this, one needs to download the conda-forge package [libopenblas](https://anaconda.org/conda-forge/libopenblas/files), and the package [llbm-openmp](https://anaconda.org/conda-forge/llvm-openmp/files). Note that one needs to again pick the right file here: should say "win-64" (for Windows), and in the case of `libopenblas`, it should say "openmp" (faster threading backend).
+To use the OpenMP variant, one can instead get the `.dll` files from conda-forge packages. For this, one needs to download the conda-forge package [libopenblas](https://anaconda.org/conda-forge/libopenblas/files), and the package [llvm-openmp](https://anaconda.org/conda-forge/llvm-openmp/files). Note that one needs to again pick the right file here: should say "win-64" (for Windows), and in the case of `libopenblas`, it should say "openmp" (faster threading backend).
 
 Then, those conda packages can be extracted (note that they are just compressed files with a special nested structure, where the first file contains other two compressed files inside) and the file `openblas.dll` from package `libopenblas` similarly copied into the R `bin` folder twice with names `Rblas.dll` and `Rlapack.dll`.
 
