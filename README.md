@@ -60,8 +60,6 @@ The following will be required in order to follow the next steps:
 * Download the latest version of OpenBLAS for Windows from their [GitHub releases page](https://github.com/xianyi/OpenBLAS/releases) - **be sure to download the right version** for your platform. Most likely, will be named similarly to this (as it was on version 0.3.23):
 ![image](github_openblas.png "github_openblas.png")
 
-    * Optional: for even faster results, instead of the downloading the GitHub release from OpenBLAS which uses pthreads for parallelization, download an OpenMP-based version [from conda-forge](https://anaconda.org/conda-forge/libopenblas/files). Should pick a version from there saying "win-64" (for windows) and "openmp" (faster threading backend) - but note that the next couple steps will look a bit different if you download that file instead of the one form GitHub. Despite the file extensions, those .conda files are also compressed files which will contain a large .dll file inside them (see rest of this tutorial for more details).
-
 * De-compress (un-zip) the file. If using 7-zip, this can be done by right-clicking the file, selecting '7-zip' and then 'Extract to ...' or similar.
 ![image](extracting.png "extracting")
 
@@ -111,3 +109,27 @@ OpenBLAS supports multi-threading, which can be controlled dynamically through t
 ![image](new_var2.png "new_var2")
 
 * Reboot your computer. Next time R is started, OpenBLAS will be configured to exploit all the available threads from your CPU to run faster.
+
+### Using the faster OpenMP backend
+
+Note that OpenBLAS by default ships with the 'pthreads' backend for multi-threading, but it offers a faster version based on OpenMP. For better speed, it's possible to use the OpenMP version of OpenBLAS instead, but this variant is not bunlded in the pre-built GitHub releases of OpenBLAS.
+
+To use the OpenMP variant, one can instead get the `.dll` files from conda-forge packages. For this, one needs to download the conda-forge package [libopenblas](https://anaconda.org/conda-forge/libopenblas/files), and the package [llbm-openmp](https://anaconda.org/conda-forge/llvm-openmp/files). Note that one needs to again pick the right file here: should say "win-64" (for Windows), and in the case of `libopenblas`, it should say "openmp" (faster threading backend).
+
+Then, those conda packages can be extracted (note that they are just compressed files with a special nested structure, where the first file contains other two compressed files inside) and the file `openblas.dll` from package `libopenblas` similarly copied into the R `bin` folder twice with names `Rblas.dll` and `Rlapack.dll`.
+
+But note in this case that one also needs to copy the `.dll` files from package `llvm-openmp` (`libomp.dll`, `libiomp5md.dll`) into the same `bin` folder, **without** renaming them.
+
+With the OpenMP variant, the number of threads can also be controlled through environment variable `OPENMP_NUM_THREADS`.
+
+### Using a conda-installed R
+
+Note that replacing the `.dll` files with this mechanism makes R use the right backend, but it can present issues with some packages that interact with BLAS outside of R's functions, such as [RhpcBLASctl](https://cran.r-project.org/web/packages/RhpcBLASctl/index.html).
+
+In order to get everything working correctly with the right BLAS, an easier alternative is to install R through the `conda` / `mamba` software, from the `conda-forge` channel. To do so, first install `conda` or `mamba`, for example through the [miniforge](https://github.com/conda-forge/miniforge) installer (which enables the channel conda-forge and sets it as default).
+
+Then, one can install R with a specific BLAS variant as follows:
+
+```shell
+conda install -c conda-forge --override-channels r-base blas=*=*openblas* openblas=*=*openmp*
+```
