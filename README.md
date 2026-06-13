@@ -80,7 +80,7 @@ The following will be required in order to follow the next steps:
 
 * Rename one of the copies as `Rblas.dll` and the other as `Rlapack.dll` (see GIF video below).
 
-* **Optionally**, or if you start getting errors about a missing DLL when re-installing packages, leave a third copy of the the DLL from the zip file in this same folder, but with its original name (e.g. `libopenblas.dll` - that is, there should be 3 copies of the same file, with names `Rblas.dll`, `Rlapack.dll`, and `libopenblas.dll`). See GIF video below:
+* **Optionally**, or if you start getting errors about a missing DLL when installing packages, leave a third copy of the the DLL from the zip file in this same folder, but with its original name (e.g. `libopenblas.dll` - that is, there should be 3 copies of the same file, with names `Rblas.dll`, `Rlapack.dll`, and `libopenblas.dll`). See GIF video below:
 
 ![image](swap_blases.gif "swap_blases")
 
@@ -116,9 +116,13 @@ Note that OpenBLAS by default ships with the 'pthreads' backend for multi-thread
 
 To use the OpenMP variant, one can instead get the `.dll` files from conda-forge packages. For this, one needs to download the conda-forge package [libopenblas](https://anaconda.org/conda-forge/libopenblas/files), and the package [llvm-openmp](https://anaconda.org/conda-forge/llvm-openmp/files). Note that one needs to again pick the right file here: should say "win-64" (for Windows), and in the case of `libopenblas`, it should say "openmp" (faster threading backend).
 
+![image](conda_files.png "conda_files")
+
 Then, those conda packages can be extracted (note that they are just compressed files with a special nested structure, where the first file contains other two compressed files inside) and the file `openblas.dll` from package `libopenblas` similarly copied into the R `bin` folder twice with names `Rblas.dll` and `Rlapack.dll`.
 
 But note in this case that one also needs to copy the `.dll` files from package `llvm-openmp` (`libomp.dll`, `libiomp5md.dll`) into the same `bin` folder, **without** renaming them.
+
+**Important:** unlike the OpenBLAS packages that can be downloaded from GitHub which name the file `libopenblas.dll`, the ones from conda-forge name it `openblas.dll`. If leaving a third copy of this `.dll` in the `bin` folder as in the previous steps, this third copy should keep the name `openblas.dll`.
 
 With the OpenMP variant, the number of threads can also be controlled through environment variable `OPENMP_NUM_THREADS`.
 
